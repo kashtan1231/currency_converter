@@ -44,17 +44,17 @@
     </div>
 
     <div
-      v-if="favorites.length > 0"
+      v-if="favoriteList.length > 0"
       class="all-currencies__favorites"
     >
       <p>Обрані:</p>
       <div
-        v-for="item in favorites"
+        v-for="item in favoriteList"
         class="all-currencies__favorites-item"
         @click="removeFromFavorites(item)"
-        :key="item"
+        :key="item.cc"
       >
-        {{ item }}
+        {{ item.cc }}
       </div>
     </div>
 
@@ -65,17 +65,17 @@
         :key="item.cc"
       >
         <img
-          v-if="favorites.includes(item.cc)"
+          v-if="isCurrencyFavorite(item)"
           src="@/assets/star-shaded.svg"
           class="all-currencies__list-item-star"
-          @click="removeFromFavorites(item.cc)"
+          @click="removeFromFavorites(item)"
           alt="star-shaded"
         />
         <img
           v-else
           src="@/assets/star.svg"
           class="all-currencies__list-item-star"
-          @click="addToFavorites(item.cc)"
+          @click="addToFavorites(item)"
           alt="star"
         />
 
@@ -97,10 +97,12 @@ export default class AllCurrencies extends Vue {
   searchedCurrency = ''
   isReferenceSelectorShown = false
   selectedCurrency: Record<string, string> = {}
-  favorites: Array<string> = []
 
+  get favoriteList(): Array<Record<string, string>> {
+    return this.$store.state.currency.favoriteList
+  }
   get currenciesListShown(): Array<Record<string, string>> {
-    return this.$store.state.currency.currenciesList.filter(
+    return this.$store.state.currency.allCurrenciesList.filter(
       (item: any) => item.cc !== this.selectedCurrency.cc
     )
   }
@@ -112,6 +114,9 @@ export default class AllCurrencies extends Vue {
     )
   }
 
+  isCurrencyFavorite(item: any): boolean {
+    return this.favoriteList.some((obj) => obj.cc === item.cc)
+  }
   calculatedValue(rate: string): string {
     return `${parseFloat((+rate / +this.selectedCurrency.rate).toFixed(4))} ${
       this.selectedCurrency.txt
@@ -127,15 +132,11 @@ export default class AllCurrencies extends Vue {
     this.selectedCurrency = newCurrency
     this.closeCurrencySelector()
   }
-  addToFavorites(itemCC: string): void {
-    this.favorites.push(itemCC)
+  addToFavorites(item: any): void {
+    this.$store.commit('currency/addToFavorites', item)
   }
-  removeFromFavorites(itemCC: string): void {
-    const index = this.favorites.indexOf(itemCC)
-
-    if (index !== -1) {
-      this.favorites.splice(index, 1)
-    }
+  removeFromFavorites(item: any): void {
+    this.$store.commit('currency/removeFromFavorites', item)
   }
 
   created(): void {

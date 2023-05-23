@@ -48,14 +48,30 @@
         class="base-currency-input__search"
         label="Введіть валюту"
       />
+
+      <div
+        v-for="item in favoriteList"
+        class="currency-item"
+        @click="chooseCurrency(item)"
+        :key="item.cc"
+      >
+        <img
+          src="@/assets/star-shaded.svg"
+          class="currency-item__star"
+          alt="star-shaded"
+        />
+        <p class="currency-item__txt">{{ item.txt }}</p>
+        <p class="currency-item__cc">{{ item.cc }}</p>
+      </div>
+
       <div
         v-for="item in currenciesList"
         class="currency-item"
         @click="chooseCurrency(item)"
         :key="item.cc"
       >
-        <p class="currency-item__cc">{{ item.txt }}</p>
-        <p>{{ item.cc }}</p>
+        <p class="currency-item__txt">{{ item.txt }}</p>
+        <p class="currency-item__cc">{{ item.cc }}</p>
       </div>
     </div>
   </div>
@@ -79,6 +95,9 @@ export default class BaseCurrencyInput extends Vue {
   isInputFocused = false
   isCurrencySelectorShown = false
 
+  get favoriteList(): Array<Record<string, string>> {
+    return this.$store.state.currency.favoriteList
+  }
   get currenciesList(): Array<Record<string, string>> {
     return this.$store.state.currency.currenciesList.filter(
       (item: any) =>
@@ -236,7 +255,7 @@ export default class BaseCurrencyInput extends Vue {
 
   .currency-item {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
     padding: 8px 15px;
     transition-duration: 0.2s;
     cursor: pointer;
@@ -245,11 +264,20 @@ export default class BaseCurrencyInput extends Vue {
       background-color: $gray;
     }
 
-    &__cc {
+    &__star {
+      height: 16px;
+      margin-right: 8px;
+    }
+
+    &__txt {
       padding-right: 8px;
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
+    }
+
+    &__cc {
+      margin-left: auto;
     }
   }
 }
