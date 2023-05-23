@@ -30,14 +30,30 @@
             class="reference__selector-search"
             label="Введіть валюту"
           />
+
+          <div
+            v-for="item in favoriteList"
+            class="currency-item"
+            @click="chooseCurrency(item)"
+            :key="item.cc"
+          >
+            <img
+              src="@/assets/star-shaded.svg"
+              class="currency-item__star"
+              alt="star-shaded"
+            />
+            <p class="currency-item__txt">{{ item.txt }}</p>
+            <p class="currency-item__cc">{{ item.cc }}</p>
+          </div>
+
           <div
             v-for="item in currenciesListSearched"
             class="currency-item"
             @click="chooseCurrency(item)"
             :key="item.cc"
           >
-            <p class="currency-item__cc">{{ item.txt }}</p>
-            <p>{{ item.cc }}</p>
+            <p class="currency-item__txt">{{ item.txt }}</p>
+            <p class="currency-item__cc">{{ item.cc }}</p>
           </div>
         </div>
       </div>
@@ -258,7 +274,6 @@ export default class AllCurrencies extends Vue {
 
   .currency-item {
     display: flex;
-    justify-content: space-between;
     padding: 8px 15px;
     transition-duration: 0.2s;
     cursor: pointer;
@@ -267,11 +282,20 @@ export default class AllCurrencies extends Vue {
       background-color: $gray;
     }
 
-    &__cc {
+    &__star {
+      height: 16px;
+      margin-right: 8px;
+    }
+
+    &__txt {
       padding-right: 8px;
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
+    }
+
+    &__cc {
+      margin-left: auto;
     }
   }
 
