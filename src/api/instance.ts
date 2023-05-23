@@ -1,10 +1,10 @@
 import axios from 'axios'
 
-export const actualUrl = (): any => {
+export const actualUrl = (): string => {
   return 'https://bank.gov.ua/NBUStatService/v1/'
 }
 
-const defaultHeaders: any = {
+const defaultHeaders = {
   accept: 'application/json',
 }
 

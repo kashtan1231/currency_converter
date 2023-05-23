@@ -14,6 +14,10 @@ const routes: Array<RouteConfig> = [
     name: 'AllCurrencies',
     component: () => import('@/views/AllCurrencies.vue'),
   },
+  {
+    path: '*',
+    redirect: { name: 'Home' },
+  },
 ]
 
 const router = new VueRouter({

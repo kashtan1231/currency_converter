@@ -21,7 +21,7 @@
         :id="`field-input-${id}`"
       />
 
-      <!-- <div
+      <div
         class="base-currency-input__currency"
         @click="switchCurrencySelector"
       >
@@ -32,7 +32,7 @@
             { 'active-arrow': isCurrencySelectorShown },
           ]"
         ></div>
-      </div> -->
+      </div>
     </div>
 
     <p class="base-currency-input__helper">

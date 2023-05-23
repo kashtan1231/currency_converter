@@ -58,12 +58,13 @@ export default class Home extends Vue {
     cc: 'CCY',
     txt: '',
   }
+
   chooseFirstCurrency(newCurrency: any): void {
     this.inputFirst.rate = newCurrency.rate
     this.inputFirst.cc = newCurrency.cc
     this.inputFirst.txt = newCurrency.txt
 
-    this.calculateFirstInput()
+    this.calculateSecondInput()
   }
   chooseSecondCurrency(newCurrency: any): void {
     this.inputSecond.rate = newCurrency.rate
@@ -77,9 +78,13 @@ export default class Home extends Vue {
       this.inputFirst.rate &&
       this.inputSecond.rate
     ) {
-      this.inputFirst.value =
-        (this.inputSecond.rate / this.inputFirst.rate) * this.inputSecond.value
-    } else this.inputFirst.value = null
+      this.inputFirst.value = parseFloat(
+        (
+          (this.inputSecond.rate / this.inputFirst.rate) *
+          this.inputSecond.value
+        ).toFixed(4)
+      )
+    }
   }
   calculateSecondInput(): void {
     if (
@@ -87,9 +92,13 @@ export default class Home extends Vue {
       this.inputFirst.rate &&
       this.inputSecond.rate
     ) {
-      this.inputSecond.value =
-        (this.inputFirst.rate / this.inputSecond.rate) * this.inputFirst.value
-    } else this.inputSecond.value = null
+      this.inputSecond.value = parseFloat(
+        (
+          (this.inputFirst.rate / this.inputSecond.rate) *
+          this.inputFirst.value
+        ).toFixed(4)
+      )
+    }
   }
   switchCurrencies(): void {
     ;[this.inputFirst, this.inputSecond] = [this.inputSecond, this.inputFirst]

@@ -27,7 +27,7 @@ export default class App extends Vue {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
   background-color: $gray;
   font-family: $font-family-default, Arial;
   font-style: normal;
@@ -45,7 +45,6 @@ export default class App extends Vue {
 html,
 body {
   width: 100vw;
-  height: 100vh;
   overflow-x: hidden;
 }
 
@@ -65,7 +64,7 @@ input {
   height: 100%;
   width: 100%;
   max-width: 1279px;
-  padding: 60px 0 100px;
+  padding: 60px 0 60px;
   background-color: $white;
 }
 
