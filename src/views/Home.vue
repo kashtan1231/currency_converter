@@ -7,13 +7,23 @@
         v-model="inputFirst.value"
         @input="calculateSecondInput"
         @chooseCurrency="chooseFirstCurrency"
+        :selectedCurrency="inputFirst"
         :id="0"
         label="В мене є"
       />
+
+      <div
+        class="home__inputs-switch"
+        @click="switchCurrencies"
+      >
+        ⇄
+      </div>
+
       <BaseCurrencyInput
         v-model="inputSecond.value"
         @input="calculateFirstInput"
         @chooseCurrency="chooseSecondCurrency"
+        :selectedCurrency="inputSecond"
         :id="1"
         label="Я отримаю"
       />
@@ -28,6 +38,8 @@ import BaseCurrencyInput from '@/components/BaseCurrencyInput.vue'
 interface InputFirst {
   value: null | number
   rate: number
+  cc: string
+  txt: string
 }
 
 @Component({
@@ -37,17 +49,26 @@ export default class Home extends Vue {
   inputFirst: InputFirst = {
     value: null,
     rate: 0,
+    cc: 'CCY',
+    txt: '',
   }
   inputSecond: InputFirst = {
     value: null,
     rate: 0,
+    cc: 'CCY',
+    txt: '',
   }
-  chooseFirstCurrency(newRate: number): void {
-    this.inputFirst.rate = newRate
+  chooseFirstCurrency(newCurrency: any): void {
+    this.inputFirst.rate = newCurrency.rate
+    this.inputFirst.cc = newCurrency.cc
+    this.inputFirst.txt = newCurrency.txt
+
     this.calculateFirstInput()
   }
-  chooseSecondCurrency(newRate: number): void {
-    this.inputSecond.rate = newRate
+  chooseSecondCurrency(newCurrency: any): void {
+    this.inputSecond.rate = newCurrency.rate
+    this.inputSecond.cc = newCurrency.cc
+    this.inputSecond.txt = newCurrency.txt
     this.calculateSecondInput()
   }
   calculateFirstInput(): void {
@@ -70,6 +91,9 @@ export default class Home extends Vue {
         (this.inputFirst.rate / this.inputSecond.rate) * this.inputFirst.value
     } else this.inputSecond.value = null
   }
+  switchCurrencies(): void {
+    ;[this.inputFirst, this.inputSecond] = [this.inputSecond, this.inputFirst]
+  }
 }
 </script>
 
@@ -87,6 +111,21 @@ export default class Home extends Vue {
     display: flex;
     justify-content: center;
     gap: 16px;
+
+    &-switch {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      box-shadow: inset 0 0 0 1px $gray-dark;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $gray;
+      }
+    }
   }
 }
 </style>

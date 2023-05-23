@@ -1,5 +1,8 @@
 <template>
-  <div class="base-currency-input">
+  <div
+    class="base-currency-input"
+    v-click-outside="closeCurrencySelector"
+  >
     <label
       :class="[
         'base-currency-input__label',
@@ -18,10 +21,9 @@
         :id="`field-input-${id}`"
       />
 
-      <div
+      <!-- <div
         class="base-currency-input__currency"
         @click="switchCurrencySelector"
-        v-click-outside="closeCurrencySelector"
       >
         <p>{{ selectedCurrency.cc }}</p>
         <div
@@ -30,52 +32,61 @@
             { 'active-arrow': isCurrencySelectorShown },
           ]"
         ></div>
-      </div>
-
-      <div
-        v-if="isCurrencySelectorShown"
-        class="base-currency-input__currency-selector"
-      >
-        <div
-          v-for="item in currenciesList"
-          class="currency-item"
-          @click="chooseCurrency(item)"
-          :key="item.cc"
-        >
-          <p class="currency-item__cc">{{ item.txt }}</p>
-          <p>{{ item.cc }}</p>
-        </div>
-      </div>
+      </div> -->
     </div>
 
     <p class="base-currency-input__helper">
       {{ helper }}
     </p>
+
+    <div
+      v-if="isCurrencySelectorShown"
+      class="base-currency-input__currency-selector"
+    >
+      <BaseSearchInput
+        v-model="searchedCurrency"
+        class="base-currency-input__search"
+        label="Введіть валюту"
+      />
+      <div
+        v-for="item in currenciesList"
+        class="currency-item"
+        @click="chooseCurrency(item)"
+        :key="item.cc"
+      >
+        <p class="currency-item__cc">{{ item.txt }}</p>
+        <p>{{ item.cc }}</p>
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import vClickOutside from 'v-click-outside'
+import BaseSearchInput from './BaseSearchInput.vue'
 
-@Component
+@Component({
+  components: { BaseSearchInput },
+})
 export default class BaseCurrencyInput extends Vue {
   @Prop({ default: '' }) value!: number | null
   @Prop({ default: '' }) label!: string
+  @Prop({ default: '' }) selectedCurrency!: Record<string, string>
   @Prop({ default: null }) id!: number
 
+  searchedCurrency = ''
   isInputFocused = false
   isCurrencySelectorShown = false
-  selectedCurrency: Record<string, string> = {
-    cc: 'CCY',
-  }
 
   get currenciesList(): Array<Record<string, string>> {
-    return this.$store.state.currency.currenciesList
+    return this.$store.state.currency.currenciesList.filter(
+      (item: any) =>
+        item.cc.toLowerCase().includes(this.searchedCurrency.toLowerCase()) ||
+        item.txt.toLowerCase().includes(this.searchedCurrency.toLowerCase())
+    )
   }
   get helper(): string {
-    console.log(this.selectedCurrency.txt)
-
     return this.selectedCurrency.txt || 'Виберіть валюту зі списку'
   }
 
@@ -87,7 +98,8 @@ export default class BaseCurrencyInput extends Vue {
   }
   chooseCurrency(newCurrency: Record<string, string>): void {
     this.selectedCurrency = newCurrency
-    this.$emit('chooseCurrency', newCurrency.rate)
+    this.$emit('chooseCurrency', newCurrency)
+    this.closeCurrencySelector()
   }
   focusInput(): void {
     this.isInputFocused = true
@@ -103,6 +115,7 @@ export default class BaseCurrencyInput extends Vue {
       .replace(regex, '')
       .replace(/,/g, '.')
       .replace(/\.(?=.*\.)/g, '')
+
     this.$emit('input', target.value)
   }
 
@@ -213,6 +226,11 @@ export default class BaseCurrencyInput extends Vue {
     border: solid 1px $gray-dark;
     box-shadow: 0 0 11px 0px rgba($gray-dark, 0.5);
     overflow: auto;
+  }
+
+  &__search {
+    padding: 0 15px;
+    margin-bottom: 8px;
   }
 
   .currency-item {

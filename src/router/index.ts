@@ -9,6 +9,11 @@ const routes: Array<RouteConfig> = [
     name: 'Home',
     component: () => import('@/views/Home.vue'),
   },
+  {
+    path: '/all-currencies',
+    name: 'AllCurrencies',
+    component: () => import('@/views/AllCurrencies.vue'),
+  },
 ]
 
 const router = new VueRouter({

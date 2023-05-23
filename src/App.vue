@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <TheHeader />
     <div class="page">
       <router-view />
     </div>
@@ -9,8 +10,11 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { getCurrencies } from '@/api/mainRequests'
+import TheHeader from './components/TheHeader.vue'
 
-@Component
+@Component({
+  components: { TheHeader },
+})
 export default class App extends Vue {
   mounted(): void {
     getCurrencies()
@@ -23,7 +27,7 @@ export default class App extends Vue {
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 100vh;
+  height: 100vh;
   background-color: $gray;
   font-family: $font-family-default, Arial;
   font-style: normal;
@@ -58,7 +62,7 @@ input {
 }
 
 .page {
-  height: 100vh;
+  height: 100%;
   width: 100%;
   max-width: 1279px;
   padding: 60px 0 100px;
