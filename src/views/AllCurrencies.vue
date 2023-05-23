@@ -216,8 +216,11 @@ export default class AllCurrencies extends Vue {
     align-items: center;
     margin-bottom: 8px;
 
+    > :not(:last-child) {
+      margin-right: 8px;
+    }
+
     &-item {
-      margin-left: 8px;
       padding: 4px;
       border-radius: 4px;
       cursor: pointer;
@@ -273,6 +276,12 @@ export default class AllCurrencies extends Vue {
 
   .active-arrow {
     rotate: 180deg;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .all-currencies {
+    padding: 0 16px;
   }
 }
 </style>

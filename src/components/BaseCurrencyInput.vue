@@ -226,6 +226,7 @@ export default class BaseCurrencyInput extends Vue {
     border: solid 1px $gray-dark;
     box-shadow: 0 0 11px 0px rgba($gray-dark, 0.5);
     overflow: auto;
+    z-index: 2;
   }
 
   &__search {

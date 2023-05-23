@@ -119,7 +119,10 @@ export default class Home extends Vue {
   &__inputs {
     display: flex;
     justify-content: center;
-    gap: 16px;
+
+    > :not(:last-child) {
+      margin-right: 16px;
+    }
 
     &-switch {
       display: flex;
@@ -133,6 +136,22 @@ export default class Home extends Vue {
 
       &:hover {
         background-color: $gray;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1023px) {
+  .home {
+    padding: 0 16px;
+
+    &__inputs {
+      flex-direction: column;
+      align-items: center;
+
+      > :not(:last-child) {
+        margin-right: 0;
+        margin-bottom: 16px;
       }
     }
   }
