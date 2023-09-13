@@ -3,6 +3,7 @@ import BaseSearchInput from '@/components/BaseSearchInput.vue'
 
 describe('BaseCurrencyInput', () => {
   it('should render the label correctly', async () => {
+    asdasdas asd
     const label = 'Name'
     const wrapper = shallowMount(BaseSearchInput, {
       propsData: { label },
